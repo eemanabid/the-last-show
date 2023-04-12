@@ -16,16 +16,16 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   };
 
   const handleSaveObituary = () => {
-    localStorage.setItem("selectedImage", selectedImage.name);
-    localStorage.setItem("name", name);
-    localStorage.setItem("bornDate", bornDate);
-    localStorage.setItem("diedDate", diedDate);
-    console.log("Obituary saved to local storage:", {
+    const obituary = {
       selectedImage: selectedImage.name,
       name,
       bornDate,
       diedDate,
-    });
+    };
+    const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
+    savedObituaries.push(obituary);
+    localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
+    console.log("Obituary saved to local storage:", obituary);
   };
 
   return (

@@ -1,24 +1,12 @@
 import { useEffect, useState } from "react";
 
 function ObitDisplay({ setShowNewObituaryScreen }) {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [name, setName] = useState("");
-  const [bornDate, setBornDate] = useState("");
-  const [diedDate, setDiedDate] = useState("");
+  
+  const [obituaries, setObituaries] = useState([]);
 
   useEffect(() => {
-    {/* image isnt working? */}
-    const savedSelectedImage = localStorage.getItem("selectedImage");
-    const savedName = localStorage.getItem("name");
-    const savedBornDate = localStorage.getItem("bornDate");
-    const savedDiedDate = localStorage.getItem("diedDate");
-
-    if (savedSelectedImage && savedName && savedBornDate && savedDiedDate) {
-      setSelectedImage(savedSelectedImage);
-      setName(savedName);
-      setBornDate(savedBornDate);
-      setDiedDate(savedDiedDate);
-    }
+    const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
+    setObituaries(savedObituaries);
   }, []);
 
   const handleNewObituaryClick = () => {
@@ -37,14 +25,16 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
         </div>
       </header>
       <div id="main-container">
-        {selectedImage && name && bornDate && diedDate ? (
+        {obituaries.length > 0 ? (
           <div id="obit-holder">
-            <div id="obit-preview">
-              <img src={selectedImage} alt="obituary" />
-              <h3>{name}</h3>
-              <p>Born: {bornDate}</p>
-              <p>Died: {diedDate}</p>
-            </div>
+            {obituaries.map((obituary) => (
+              <div key={`${obituary.bornDate}-${obituary.diedDate}`} id="obit-preview">
+                <img src={obituary.selectedImage} alt="obituary" />
+                <h3>{obituary.name}</h3>
+                <p>Born: {obituary.bornDate}</p>
+                <p>Died: {obituary.diedDate}</p>
+              </div>
+            ))}
           </div>
         ) : (
           <div id="empty-holder">
