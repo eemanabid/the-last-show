@@ -1,9 +1,10 @@
 import Empty from "./Empty";
 import NewObituaryScreen from "./NewObituaryScreen";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
   const [showNewObituaryScreen, setShowNewObituaryScreen] = useState(false);
+  const mainContainerRef = useRef(null);
 
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
@@ -20,7 +21,9 @@ function App() {
           </div>
         </div>
       </header>
-      {showNewObituaryScreen ? <NewObituaryScreen /> : <Empty />}
+      <div id="main-container" ref={mainContainerRef}>
+        {showNewObituaryScreen ? <NewObituaryScreen /> : <Empty />}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,9 @@
 function NewObituaryScreen() {
-    return <div id="empty-holder">Obituary Made.</div>;
+  return (
+    <div id="obit-holder">
+      <div id="obit-maker">Obituary Made.</div>
+    </div>
+  );
   }
   
   export default NewObituaryScreen;

@@ -1,7 +1,7 @@
 function Empty() {
   return (
     <div id="empty-holder">
-      <div id="empty-message">No Obituary Yet.</div>
+      <div id="message">No Obituary Yet.</div>
     </div>
   );
 }
