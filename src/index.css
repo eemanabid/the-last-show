@@ -177,7 +177,7 @@ button:hover,
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  margin-top: 8%;
+  margin-top: 2%;
   color: black;
 }
 
@@ -311,4 +311,19 @@ input.note-title {
 #died-date {
   font-size: 15px;
   font-style: italic;
+}
+
+
+#name::placeholder {
+  color: #999;
+}
+
+#write-obit{
+  width: 530px;
+  padding: 15px;
+  background-color: lightseagreen;
+}
+
+#write-obit:hover{
+  background-color: gray;
 }

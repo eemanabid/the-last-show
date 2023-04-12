@@ -11,6 +11,19 @@ function NewObituaryScreen() {
     setSelectedImage(file);
   };
 
+  const handleSaveObituary = () => {
+    localStorage.setItem("selectedImage", selectedImage.name);
+    localStorage.setItem("name", name);
+    localStorage.setItem("bornDate", bornDate);
+    localStorage.setItem("diedDate", diedDate);
+    console.log("Obituary saved to local storage:", {
+      selectedImage: selectedImage.name,
+      name,
+      bornDate,
+      diedDate,
+    });
+  };
+
   return (
     <div id="container">
       <header>
@@ -29,7 +42,7 @@ function NewObituaryScreen() {
             <br />
             <br />
             <div id="image-input">
-              <label for="image-select">
+              <label htmlFor="image-select">
                 Select an image for the deceased:{" "}
                 {selectedImage && <span>{selectedImage.name}</span>}
               </label>
@@ -43,12 +56,13 @@ function NewObituaryScreen() {
             </div>
             <br />
             <div>
-              <label id="name">Name:</label>
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="Name of the individual who was obitchuarated"
+                style={{ border: "1px solid black", padding: "17px", width: "500px" }}
               />
             </div>
             <br />
@@ -68,6 +82,8 @@ function NewObituaryScreen() {
                 onChange={(e) => setDiedDate(e.target.value)}
               />
             </div>
+            <br />
+            <button id="write-obit" onClick={handleSaveObituary}>Write Obituary</button>
           </div>
         </div>
       </div>
