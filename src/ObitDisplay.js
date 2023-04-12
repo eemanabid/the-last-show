@@ -11,6 +11,11 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
 
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
+    {/* 
+    Just to clear all obitueries from console log -
+    localStorage.clear();
+    console.log("Local storage cleared.");   
+    */}
   };
 
   return (
