@@ -72,6 +72,7 @@ button:hover,
   text-align: center;
   margin: 0;
   padding: 10px 0;
+  border-bottom: 1px solid black;
 }
 #app-moto {
   color: gray;
