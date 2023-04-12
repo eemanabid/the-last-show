@@ -1,6 +1,6 @@
 import Empty from "./Empty";
 import NewObituaryScreen from "./NewObituaryScreen";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [showNewObituaryScreen, setShowNewObituaryScreen] = useState(false);

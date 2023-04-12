@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 
 function Empty({ setShowNewObituaryScreen }) {
   const handleNewObituaryClick = () => {
