@@ -168,7 +168,6 @@ button:hover,
   flex: 1;
   justify-content: center;
   align-items: top;
-  background-color: green;
 }
 #obit-maker{
   display: flex;
@@ -180,7 +179,6 @@ button:hover,
   font-size: 20px;
   margin-top: 8%;
   color: black;
-  background-color: red;
 }
 
 #login-button {
@@ -297,10 +295,20 @@ input.note-title {
 }
 
 #image-input label {
-  font-size: 15px;
+  font-size: 17px;
 }
 
 #image-input label:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+#born-date {
+  font-size: 15px;
+  font-style: italic;
+}
+
+#died-date {
+  font-size: 15px;
+  font-style: italic;
 }
