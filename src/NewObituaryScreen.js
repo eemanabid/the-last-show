@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import ObitDisplay from "./ObitDisplay";
 
 function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState("");
   const [bornDate, setBornDate] = useState("");
   const [diedDate, setDiedDate] = useState("");
-
+  
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
@@ -26,6 +27,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
     savedObituaries.push(obituary);
     localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
     console.log("Obituary saved to local storage:", obituary);
+    setShowNewObituaryScreen(false);
   };
 
   return (
@@ -42,7 +44,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
           <div id="obit-maker">
             <h3>Create a New Obituary</h3>
             {/* image isnt working? */}
-            <img src="./obituary.jpg" alt="obituary" />
+            <img src="./obituary.jpg" alt="obituary-logo" />
             <br />
             <br />
             <div id="image-input">

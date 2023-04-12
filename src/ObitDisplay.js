@@ -12,7 +12,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
     {/* 
-    Just to clear all obitueries from console log -
+    Just to clear all obitueries from local storage -
     localStorage.clear();
     console.log("Local storage cleared.");   
     */}
@@ -34,7 +34,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
           <div id="obit-holder">
             {obituaries.map((obituary) => (
               <div key={`${obituary.bornDate}-${obituary.diedDate}`} id="obit-preview">
-                <img src={obituary.selectedImage} alt="obituary" />
+                <img src={obituary.selectedImage} alt="obituary-image" />
                 <h3>{obituary.name}</h3>
                 <p>Born: {obituary.bornDate}</p>
                 <p>Died: {obituary.diedDate}</p>
