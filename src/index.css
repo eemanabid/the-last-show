@@ -64,7 +64,7 @@ header aside {
 }
 button:hover,
 .button:hover {
-  background-color: lightgray;
+  background-color: gray;
   color: white;
 }
 #app-header {
@@ -172,6 +172,7 @@ button:hover,
 }
 #obit-maker{
   display: flex;
+  flex-direction: column;
   flex: 1;
   height: 70%;
   justify-content: center;
@@ -295,4 +296,11 @@ input.note-title {
   margin-right: 20px;
 }
 
+#image-input label {
+  font-size: 15px;
+}
 
+#image-input label:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
