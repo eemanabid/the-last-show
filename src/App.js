@@ -1,6 +1,7 @@
-import Empty from "./Empty";
+import ObitDisplay from "./ObitDisplay";
 import NewObituaryScreen from "./NewObituaryScreen";
 import { useEffect, useState } from "react";
+
 
 function App() {
   const [showNewObituaryScreen, setShowNewObituaryScreen] = useState(false);
@@ -8,9 +9,9 @@ function App() {
   return (
     <div id="container">
       {showNewObituaryScreen ? (
-        <NewObituaryScreen />
+        <NewObituaryScreen setShowNewObituaryScreen={setShowNewObituaryScreen}/>
       ) : (
-        <Empty setShowNewObituaryScreen={setShowNewObituaryScreen} />
+        <ObitDisplay setShowNewObituaryScreen={setShowNewObituaryScreen} />
       )}
     </div>
   );

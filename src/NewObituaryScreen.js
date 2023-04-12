@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function NewObituaryScreen() {
+function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState("");
   const [bornDate, setBornDate] = useState("");
@@ -9,6 +9,10 @@ function NewObituaryScreen() {
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
+  };
+
+  const handleXButtonClick = () => {
+    setShowNewObituaryScreen(false);
   };
 
   const handleSaveObituary = () => {
@@ -29,7 +33,7 @@ function NewObituaryScreen() {
       <header>
         <div id="app-header">
           <div>
-            <button className="obit-log">X</button>
+          <button className="obit-log" onClick={handleXButtonClick}>X</button>
           </div>
         </div>
       </header>
