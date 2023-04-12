@@ -1,4 +1,14 @@
+import Empty from "./Empty";
+import NewObituaryScreen from "./NewObituaryScreen";
+import React, { useState } from 'react';
+
 function App() {
+    const [showNewObituaryScreen, setShowNewObituaryScreen] = useState(false);
+
+    const handleNewObituaryClick = () => {
+      setShowNewObituaryScreen(true);
+    };
+
   return (
     <div id="container">
       <header>
@@ -6,11 +16,12 @@ function App() {
           <h1>The Last Show</h1>
         </div>
         <div className="new-obituary">
-          <div className="email">
+          <div className="email" onClick={handleNewObituaryClick}>
             <button className="log">+ New Obituary</button>
           </div>
         </div>
       </header>
+      {showNewObituaryScreen ? <NewObituaryScreen /> : <Empty />}
     </div>
   );
 }
