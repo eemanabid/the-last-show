@@ -17,18 +17,23 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   };
 
   const handleSaveObituary = () => {
-    const obituary = {
-      selectedImage: selectedImage.name,
-      name,
-      bornDate,
-      diedDate,
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImage);
+    reader.onload = () => {
+      const obituary = {
+        selectedImage: reader.result,
+        name,
+        bornDate,
+        diedDate,
+      };
+      const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
+      savedObituaries.push(obituary);
+      localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
+      console.log("Obituary saved to local storage:", obituary);
+      setShowNewObituaryScreen(false);
     };
-    const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
-    savedObituaries.push(obituary);
-    localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
-    console.log("Obituary saved to local storage:", obituary);
-    setShowNewObituaryScreen(false);
   };
+  
 
   return (
     <div id="container">
@@ -43,7 +48,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
         <div id="obit-holder">
           <div id="obit-maker">
             <h3>Create a New Obituary</h3>
-            <img src="./obituary.png" alt="obituary-logo" className="obituary-image"/>
+            <img src="./obituary.png" alt="obituary-logo" className="obituary-logo"/>
             <br />
             <br />
             <div id="image-input">

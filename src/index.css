@@ -165,8 +165,7 @@ button:hover,
 }
 
 #obit-preview {
-  background-color: lightblue;
-  width: 350px;
+  width: 330px;
   height: 50%;
   border: 1px solid black;
   margin-top: 20px;
@@ -181,6 +180,11 @@ button:hover,
 }
 
 .obituary-image {
+  width: 330px;
+  height: 300px;
+}
+
+.obituary-logo {
   width: 150px;
   height: 50px;
 }
