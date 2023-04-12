@@ -179,3 +179,8 @@ button:hover,
 #obit-date {
   font-size: 13px;
 }
+
+.obituary-image {
+  width: 150px;
+  height: 50px;
+}

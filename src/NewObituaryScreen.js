@@ -43,8 +43,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
         <div id="obit-holder">
           <div id="obit-maker">
             <h3>Create a New Obituary</h3>
-            {/* image isnt working? */}
-            <img src="./obituary.jpg" alt="obituary-logo" />
+            <img src="./obituary.png" alt="obituary-logo" className="obituary-image"/>
             <br />
             <br />
             <div id="image-input">
