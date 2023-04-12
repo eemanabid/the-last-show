@@ -73,76 +73,9 @@ button:hover,
   margin: 0;
   padding: 10px 0;
 }
-#app-moto {
-  color: gray;
-  font-size: 0.7em;
-  padding-top: 4px;
-}
 #main-container {
   display: flex;
   flex: 1;
-}
-#write-box {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-#sidebar {
-  flex: 0 1 20%;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #eee;
-}
-#notes-holder {
-  flex: 1;
-  overflow-y: auto;
-}
-#notes-holder > ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-#sidebar header {
-  display: flex;
-  flex-direction: column;
-}
-#sidebar header h2 {
-  padding: 10px 16px;
-}
-#filter {
-  padding: 10px;
-}
-.note-item {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-}
-.note-item a {
-  padding: 10px;
-}
-.note-item a:hover,
-.note-item a.active {
-  background-color: pink;
-  color: white;
-}
-.note-when {
-  color: #888;
-  font-size: 0.7em;
-  margin-top: 4px;
-  text-indent: 1px;
-}
-.note-description {
-  padding: 10px 0;
-  font-size: 0.9em;
-}
-.note-tag {
-  margin-right: 4px;
-  display: inline-block;
-}
-.note-tag:last-child {
-  margin-right: 0;
 }
 #empty-holder {
   display: flex;
@@ -179,104 +112,6 @@ button:hover,
   font-size: 20px;
   margin-top: 2%;
   color: black;
-}
-
-#login-button {
-  border: 0.5px solid black;
-  padding: 15px;
-  height: 100%;
-  font-size: 2em;
-  color: black;
-}
-
-#login-button-div{
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 7px;
-  color: black;
-  border: 2px;
-}
-
-#write-box header {
-  display: flex;
-}
-#write-box h2 {
-  padding: 4px 0;
-}
-#note-info {
-  flex: 1;
-}
-#note-info input {
-  display: block;
-}
-#note-controls {
-  flex: 0 1 140px;
-  display: flex;
-  justify-content: flex-end;
-}
-#note-controls a {
-  padding: 4px 8px;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#note-controls a:hover {
-  border-color: #444;
-}
-#note-info,
-#note-content {
-  padding: 16px;
-}
-#note-content p {
-  margin-bottom: 10px;
-}
-#notes-list-heading {
-  display: flex;
-  border-bottom: 1px solid #eee;
-}
-#notes-list-heading h2 {
-  flex: 1;
-}
-#new-note-button {
-  flex: 0 1 20%;
-  font-size: 1.5em;
-}
-.ql-editor {
-  font-size: 1.2em !important;
-}
-#note-info .note-title {
-  font-size: 1.5em;
-}
-input.note-title {
-  width: 100%;
-}
-.hidden {
-  display: none !important;
-}
-.quill {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.ql-container.ql-snow {
-  border: 0 !important;
-}
-.ql-toolbar.ql-snow {
-  border-top: 0 !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-}
-.ql-container {
-  flex: 1;
-}
-#no-note-yet {
-  color: gray;
-  padding: 16px;
-  text-align: center;
-  font-size: 1.2em;
 }
 
 .log {
@@ -327,4 +162,20 @@ input.note-title {
 
 #write-obit:hover{
   background-color: gray;
+}
+
+#obit-preview {
+  background-color: lightblue;
+  width: 350px;
+  height: 50%;
+  border: 1px solid black;
+  margin-top: 20px;
+}
+
+#obit-title {
+  font-size: 17px;
+}
+
+#obit-date {
+  font-size: 13px;
 }

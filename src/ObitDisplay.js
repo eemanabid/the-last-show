@@ -1,22 +1,29 @@
 import { useEffect, useState } from "react";
 
 function ObitDisplay({ setShowNewObituaryScreen }) {
-  
   const [obituaries, setObituaries] = useState([]);
 
   useEffect(() => {
-    const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
+    const savedObituaries =
+      JSON.parse(localStorage.getItem("obituaries")) || [];
     setObituaries(savedObituaries);
   }, []);
 
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
-    {/* 
+    {
+      /* 
     Just to clear all obitueries from local storage -
     localStorage.clear();
     console.log("Local storage cleared.");   
-    */}
+    */
+    }
   };
+
+  const formatDate = (date) => {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  }
 
   return (
     <div id="container">
@@ -33,11 +40,15 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
         {obituaries.length > 0 ? (
           <div id="obit-holder">
             {obituaries.map((obituary) => (
-              <div key={`${obituary.bornDate}-${obituary.diedDate}`} id="obit-preview">
+              <div
+                key={`${obituary.bornDate}-${obituary.diedDate}`}
+                id="obit-preview"
+              >
                 <img src={obituary.selectedImage} alt="obituary-image" />
-                <h3>{obituary.name}</h3>
-                <p>Born: {obituary.bornDate}</p>
-                <p>Died: {obituary.diedDate}</p>
+                <div>
+                  <p id="obit-title">{obituary.name}</p>
+                  <p id="obit-date">{`${formatDate(obituary.bornDate)} - ${formatDate(obituary.diedDate)}`}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -52,4 +63,3 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
 }
 
 export default ObitDisplay;
-
