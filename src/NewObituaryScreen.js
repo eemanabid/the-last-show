@@ -71,7 +71,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Name of the individual who was obitchuarated"
+                placeholder="Name of the deceased"
                 style={{ border: "1px solid black", padding: "17px", width: "500px" }}
               />
             </div>

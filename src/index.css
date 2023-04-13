@@ -44,10 +44,10 @@ button {
   overflow: hidden;
 }
 #container > header {
-  border-top: 3px solid pink;
+  border-top: 3px solid grey;
 }
 header h1 a:hover {
-  color: pink;
+  color: grey;
 }
 header {
   display: flex;
@@ -64,7 +64,7 @@ header aside {
 }
 button:hover,
 .button:hover {
-  background-color: darkblue;
+  background-color: grey;
   color: white;
 }
 #app-header {
@@ -161,7 +161,7 @@ button:hover,
 }
 
 #write-obit:hover{
-  background-color: darkblue;
+  background-color: grey;
 }
 
 #obit-preview {
