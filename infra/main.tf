@@ -47,7 +47,7 @@ data "archive_file" "create-obituary-archive" {
   type = "zip"
   # this file (main.py) needs to exist in the same folder as this 
   # Terraform configuration file
-  source_file = "../functions/create-obituary/main.py"
+  source_dir = "../functions/create-obituary"
   output_path = "create-obituary.zip"
 }
 
@@ -116,6 +116,7 @@ output "lambda_url" {
   value = aws_lambda_function_url.url.function_url
 }
 
+
 # read the docs: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 resource "aws_dynamodb_table" "the-last-show-30142625" {
   name         = "the-last-show-30142625"
@@ -129,6 +130,7 @@ resource "aws_dynamodb_table" "the-last-show-30142625" {
 
   # we only need a student id to find an item in the table; therefore, we 
   # don't need a sort key here
+  /*
   hash_key = "email" // CHANGE THESE
   range_key = "id"
 
@@ -141,12 +143,13 @@ resource "aws_dynamodb_table" "the-last-show-30142625" {
   attribute {
     name = "id"
     type = "S"
-  }
+  }*/
 }
 
 /***************************************************************************************************/
 // GET OBITUARIES
 # create a role for the Lambda function to assume
+/*
 resource "aws_iam_role" "lambda_get_obituaries" {
   name               = "iam-for-lambda-get-obituaries"
   assume_role_policy = jsonencode({
@@ -226,4 +229,4 @@ resource "aws_lambda_function_url" "get_obituaries_url" {
 # show the Function URL after creation
 output "get_obituaries_url" {
   value = aws_lambda_function_url.get_obituaries_url.function_url
-}
+}*/
