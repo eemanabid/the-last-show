@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ObitDisplay from "./ObitDisplay";
+import { v4 as uuidv4 } from "uuid";
 
 function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -9,28 +10,40 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
-    setSelectedImage(file);
+    setSelectedImage(e.target.files[0]);
+    console.log(file)
   };
 
   const handleXButtonClick = () => {
     setShowNewObituaryScreen(false);
   };
 
-  const handleSaveObituary = () => {
+  const handleSaveObituary = async () => {
     const reader = new FileReader();
     reader.readAsDataURL(selectedImage);
-    reader.onload = () => {
+    reader.onload = async () => {
       const obituary = {
         selectedImage: reader.result,
         name,
         bornDate,
         diedDate,
       };
+      const data = new FormData();
+      data.append("image", selectedImage);
+      data.append("name", name);
+      data.append("bornDate", bornDate);
+      data.append("diedDate", diedDate);
+      const response = await fetch ("https://z7hbbsaieiinsdewucy3j3wq7u0vlksu.lambda-url.ca-central-1.on.aws/", {
+        method: "POST",
+        body: data,
+      })
       const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
       savedObituaries.push(obituary);
       localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
       console.log("Obituary saved to local storage:", obituary);
       setShowNewObituaryScreen(false);
+      const result = await response.text();
+      console.log(result);
     };
   };
   

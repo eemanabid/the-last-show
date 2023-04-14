@@ -79,11 +79,36 @@ resource "aws_iam_policy" "logs" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "dynamodb:*"
+        "dynamodb:*",
+        "ssm:Describe*",
+        "ssm:Get*",
+        "ssm:List*"
       ],
       "Resource": ["arn:aws:logs:*:*:*","${aws_dynamodb_table.the-last-show-30142625.arn}"],
       "Effect": "Allow"
     }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "ssm" {
+  name        = "lambda-ssm-create-obituary-30141172"
+  description = "IAM policy for ssm"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:Describe*",
+                "ssm:Get*",
+                "ssm:List*"
+            ],
+            "Resource": "*"
+        }
   ]
 }
 EOF
@@ -94,6 +119,13 @@ EOF
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.logs.arn
+}
+
+# attach the above policy to the function role
+# see the docs: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+resource "aws_iam_role_policy_attachment" "lambda_ssm" {
+  role       = aws_iam_role.lambda.name
+  policy_arn = aws_iam_policy.ssm.arn
 }
 
 # create a Function URL for Lambda 
@@ -130,26 +162,21 @@ resource "aws_dynamodb_table" "the-last-show-30142625" {
 
   # we only need a student id to find an item in the table; therefore, we 
   # don't need a sort key here
-  /*
-  hash_key = "email" // CHANGE THESE
-  range_key = "id"
+  
+  hash_key = "name" // CHANGE THESE
+  
 
   # the hash_key data type is string
   attribute {
-    name = "email"
+    name = "name"
     type = "S"
   }
-
-  attribute {
-    name = "id"
-    type = "S"
-  }*/
 }
 
 /***************************************************************************************************/
 // GET OBITUARIES
 # create a role for the Lambda function to assume
-/*
+
 resource "aws_iam_role" "lambda_get_obituaries" {
   name               = "iam-for-lambda-get-obituaries"
   assume_role_policy = jsonencode({
@@ -169,7 +196,7 @@ resource "aws_iam_role" "lambda_get_obituaries" {
 # create archive file from delete_note.py
 data "archive_file" "get-obituaries-30141172-archive" {
   type = "zip"
-  source_file = "../functions/get-obituaries/main.py"
+  source_dir = "../functions/get-obituaries"
   output_path = "get-obituaries.zip"
 }
 
@@ -184,8 +211,8 @@ resource "aws_lambda_function" "lambda_get_obituaries" {
 }
 
 # create a policy for deleting notes from the DynamoDB table
-resource "aws_iam_policy" "dynamodb_get_policy" {
-  name = "dynamodb-get-policy"
+resource "aws_iam_policy" "dynamodb_get_obituaries_policy" {
+  name = "dynamodb-get-obituraies-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -207,8 +234,8 @@ resource "aws_iam_policy" "dynamodb_get_policy" {
 }
 
 # attach the above policy to the function role
-resource "aws_iam_role_policy_attachment" "lambda_dynamodb_get_policy" {
-  policy_arn = aws_iam_policy.dynamodb_get_policy.arn
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_get_obituaries_policy" {
+  policy_arn = aws_iam_policy.dynamodb_get_obituaries_policy.arn
   role       = aws_iam_role.lambda_get_obituaries.name
 }
 
@@ -229,4 +256,4 @@ resource "aws_lambda_function_url" "get_obituaries_url" {
 # show the Function URL after creation
 output "get_obituaries_url" {
   value = aws_lambda_function_url.get_obituaries_url.function_url
-}*/
+}
