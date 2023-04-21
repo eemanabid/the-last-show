@@ -196,3 +196,8 @@ button:hover,
   width: 150px;
   height: 50px;
 }
+
+#obit-description {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: medium;
+}
