@@ -19,6 +19,10 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
   };
 
   const handleSaveObituary = async () => {
+    if (name.trim() === "") {
+      alert("Please fill out this field.");
+      return;
+      }
     const reader = new FileReader();
     reader.readAsDataURL(selectedImage);
     reader.onload = async () => {
