@@ -4,9 +4,24 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
 
   useEffect(() => {
-    const savedObituaries =
+    /*const savedObituaries =
       JSON.parse(localStorage.getItem("obituaries")) || [];
-    setObituaries(savedObituaries);
+    setObituaries(savedObituaries);*/
+    async function get_obituaries(){
+      const res = await fetch("https://p2fzxu4vzdmyvuykry3yh2kwnq0heoqz.lambda-url.ca-central-1.on.aws/", {
+        method: "GET",
+      });
+
+      const jsonRes = await res.json();
+      console.log(jsonRes);
+    
+      if (jsonRes && jsonRes.length != null) {
+        setObituaries(jsonRes);
+      } else { 
+        setObituaries([]); // set notes to empty array
+      }
+    }
+    get_obituaries();
   }, []);
 
   const handleNewObituaryClick = () => {
@@ -44,7 +59,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                 key={`${obituary.bornDate}-${obituary.diedDate}`}
                 id="obit-preview"
               >
-                <img src={obituary.selectedImage} alt="obituary-image" className="obituary-image"/>
+                <img src={obituary.cloudinary_url} alt="obituary-image" className="obituary-image"/>
                 <div>
                   <p id="obit-title">{obituary.name}</p>
                   <p id="obit-date">{`${formatDate(obituary.bornDate)} - ${formatDate(obituary.diedDate)}`}</p>

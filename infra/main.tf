@@ -218,7 +218,7 @@ resource "aws_iam_policy" "dynamodb_get_obituaries_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "dynamodb:Query"
+        Action = "dynamodb:Scan"
         Effect = "Allow"
         Resource = aws_dynamodb_table.the-last-show-30142625.arn
       },

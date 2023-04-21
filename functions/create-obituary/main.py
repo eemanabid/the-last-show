@@ -7,6 +7,7 @@ import base64
 import os
 import time
 import hashlib
+import json
 
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("the-last-show-30142625")
@@ -32,15 +33,28 @@ def lambda_handler(event, context):
         f.write(binary_data[0])
 
     res = upload_to_cloudinary(file_name)
+    cloudinary_url = res['url']
 
     item = {
         'name': name,
         'bornDate': bornDate,
         'diedDate': diedDate,
+        'image_public_id': res['public_id'],
+        'cloudinary_url': cloudinary_url
     }
-    table.put_item(Item=item)
-    return {"statusCode": 200, 
-            "body": "Success"}
+
+    try:
+        table.put_item(Item=item)
+        return {"statusCode": 200, 
+                "body": "Success"}
+    except Exception as exp:
+        print(f"exception: {exp}")
+        return {
+            "statusCode": 401,
+                "body": json.dumps({
+                    "message": str(exp)
+            })
+        }
     
 def upload_to_cloudinary(filename, resource_type = "image", extra_fields=()):
     api_key = get_keys("/the-last-show/cloudinary-key")
