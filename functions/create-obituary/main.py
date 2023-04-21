@@ -8,7 +8,6 @@ import os
 import time
 import hashlib
 import json
-import openai
 
 client = boto3.client("ssm")
 
@@ -25,51 +24,6 @@ def get_keys(key_path):
 
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("the-last-show-30142625")
-gpt_key = get_keys("/the-last-show/gpt-key")
-openai.api_key = gpt_key
-
-def lambda_handler(event, context):
-    body = event["body"]
-    if event["isBase64Encoded"]:
-        body = base64.b64decode(body)
-    content_type = event["headers"]["content-type"]
-    data = decoder.MultipartDecoder(body, content_type)
-
-    binary_data = [part.content for part in data.parts]
-    name = binary_data[1].decode()
-    bornDate = binary_data[2].decode()
-    diedDate = binary_data[3].decode()
-
-    key = "obituary.png"
-    file_name = os.path.join("/tmp", key)
-    with open(file_name, "wb") as f:
-        f.write(binary_data[0])
-
-    res = upload_to_cloudinary(file_name)
-    cloudinary_url = res['url']
-    gpt_description = chat_gpt(name, bornDate, diedDate)
-    print(gpt_description)
-
-    item = {
-        'name': name,
-        'bornDate': bornDate,
-        'diedDate': diedDate,
-        'cloudinary_url': cloudinary_url,
-        'obituary': gpt_description
-    }
-
-    try:
-        table.put_item(Item=item)
-        return {"statusCode": 200, 
-                "body": "Success"}
-    except Exception as exp:
-        print(f"exception: {exp}")
-        return {
-            "statusCode": 401,
-                "body": json.dumps({
-                    "message": str(exp)
-            })
-        }
     
 def upload_to_cloudinary(filename, resource_type = "image", extra_fields=()):
     api_key = get_keys("/the-last-show/cloudinary-key")
@@ -112,15 +66,62 @@ def create_query_string(body):
 
     return query_string
 
-def chat_gpt(name, bornDate, diedDate):
+def ask_gpt(name, bornDate, diedDate):
+    gpt_key = get_keys("/the-last-show/gpt-key")
+    url = "https://api.openai.com/v1/completions"
     prompt = f"write an obituary about a fictional character named {name} who was born on {bornDate} and died on {diedDate}."
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.5,
-    )
-    obituary = response.choices[0].text
-    return obituary
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {gpt_key}"
+    }
+    body = {
+        "model": "text-curie-001",
+        "prompt": prompt,
+        "max_tokens": 700,
+        "temperature": 0.2
+    }
+    res = requests.post(url, headers=headers, json=body)
+    return res.json()["choices"][0]["text"]
+
+def lambda_handler(event, context):
+    body = event["body"]
+    if event["isBase64Encoded"]:
+        body = base64.b64decode(body)
+    content_type = event["headers"]["content-type"]
+    data = decoder.MultipartDecoder(body, content_type)
+
+    binary_data = [part.content for part in data.parts]
+    name = binary_data[1].decode()
+    bornDate = binary_data[2].decode()
+    diedDate = binary_data[3].decode()
+
+    key = "obituary.png"
+    file_name = os.path.join("/tmp", key)
+    with open(file_name, "wb") as f:
+        f.write(binary_data[0])
+
+    res = upload_to_cloudinary(file_name)
+    cloudinary_url = res['url']
+    gpt_description = ask_gpt(name, bornDate, diedDate)
+
+    item = {
+        'name': name,
+        'bornDate': bornDate,
+        'diedDate': diedDate,
+        'cloudinary_url': cloudinary_url,
+        'obituary': gpt_description,
+        'creation': int(time.time())
+    }
+
+    try:
+        table.put_item(Item=item)
+        return {"statusCode": 200, 
+                "body": "Success"}
+    except Exception as exp:
+        print(f"exception: {exp}")
+        return {
+            "statusCode": 401,
+                "body": json.dumps({
+                    "message": str(exp)
+            })
+        }

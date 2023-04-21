@@ -76,6 +76,7 @@ button:hover,
 #main-container {
   display: flex;
   flex: 1;
+  overflow: auto;
 }
 #empty-holder {
   display: flex;
@@ -97,10 +98,17 @@ button:hover,
   color: gray;
 }
 #obit-holder {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  gap: 115px;
+  justify-items: center;
+  align-items: start;
+  padding: 20px;
+}
+#obit-holder-new {
   display: flex;
   flex: 1;
-  justify-content: center;
-  align-items: top;
 }
 #obit-maker{
   display: flex;
@@ -168,6 +176,7 @@ button:hover,
   width: 330px;
   height: 50%;
   margin-top: 20px;
+  padding: 5px;
 }
 
 #obit-title {

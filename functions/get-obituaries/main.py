@@ -12,7 +12,8 @@ def lambda_handler(event, context):
             response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
             items.extend(response['Items'])
         if (len(items) != 0):
-                return items
+                sorted_items = sorted(items, key=lambda x: x["creation"])
+                return sorted_items
         else:
             return []
     except Exception as exp:

@@ -41,10 +41,11 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
         method: "POST",
         body: data,
       })
+      /*
       const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
       savedObituaries.push(obituary);
       localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
-      console.log("Obituary saved to local storage:", obituary);
+      console.log("Obituary saved to local storage:", obituary);*/
       setShowNewObituaryScreen(false);
       const result = await response.text();
       console.log(result);
@@ -62,7 +63,7 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
         </div>
       </header>
       <div id="main-container">
-        <div id="obit-holder">
+        <div id="obit-holder-new">
           <div id="obit-maker">
             <h3>Create a New Obituary</h3>
             <img src="./obituary.png" alt="obituary-logo" className="obituary-logo"/>

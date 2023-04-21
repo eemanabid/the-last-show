@@ -63,6 +63,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                 <div>
                   <p id="obit-title">{obituary.name}</p>
                   <p id="obit-date">{`${formatDate(obituary.bornDate)} - ${formatDate(obituary.diedDate)}`}</p>
+                  <p id="obit-description">{obituary.obituary}</p>
                 </div>
               </div>
             ))}
