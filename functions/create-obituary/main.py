@@ -8,9 +8,25 @@ import os
 import time
 import hashlib
 import json
+import openai
+
+client = boto3.client("ssm")
+
+response = client.get_parameters_by_path(
+    Path='/the-last-show/',
+    Recursive=True,
+    WithDecryption=True
+)
+
+response = {key["Name"]: key["Value"] for key in response["Parameters"]}
+
+def get_keys(key_path):
+    return response[key_path]
 
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("the-last-show-30142625")
+gpt_key = get_keys("/the-last-show/gpt-key")
+openai.api_key = gpt_key
 
 def lambda_handler(event, context):
     body = event["body"]
@@ -20,12 +36,9 @@ def lambda_handler(event, context):
     data = decoder.MultipartDecoder(body, content_type)
 
     binary_data = [part.content for part in data.parts]
-    #image = binary_data[1].decode()
     name = binary_data[1].decode()
     bornDate = binary_data[2].decode()
     diedDate = binary_data[3].decode()
-    print(name, type[name])
-    print(bornDate, type[bornDate])
 
     key = "obituary.png"
     file_name = os.path.join("/tmp", key)
@@ -34,13 +47,15 @@ def lambda_handler(event, context):
 
     res = upload_to_cloudinary(file_name)
     cloudinary_url = res['url']
+    gpt_description = chat_gpt(name, bornDate, diedDate)
+    print(gpt_description)
 
     item = {
         'name': name,
         'bornDate': bornDate,
         'diedDate': diedDate,
-        'image_public_id': res['public_id'],
-        'cloudinary_url': cloudinary_url
+        'cloudinary_url': cloudinary_url,
+        'obituary': gpt_description
     }
 
     try:
@@ -97,19 +112,15 @@ def create_query_string(body):
 
     return query_string
 
-client = boto3.client("ssm")
-
-response = client.get_parameters_by_path(
-    Path='/the-last-show/',
-    Recursive=True,
-    WithDecryption=True
-)
-
-response = {key["Name"]: key["Value"] for key in response["Parameters"]}
-
-def get_keys(key_path):
-    return response[key_path]
-
-#def get_public_ip():
- #   res = requests.get("https://checkip.amazonaws.com")
-  #  return res.text
+def chat_gpt(name, bornDate, diedDate):
+    prompt = f"write an obituary about a fictional character named {name} who was born on {bornDate} and died on {diedDate}."
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    obituary = response.choices[0].text
+    return obituary
