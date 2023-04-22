@@ -77,7 +77,7 @@ def ask_gpt(name, bornDate, diedDate):
     body = {
         "model": "text-curie-001",
         "prompt": prompt,
-        "max_tokens": 700,
+        "max_tokens": 400,
         "temperature": 0.2
     }
     res = requests.post(url, headers=headers, json=body)
