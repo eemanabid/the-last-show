@@ -83,6 +83,24 @@ def ask_gpt(name, bornDate, diedDate):
     res = requests.post(url, headers=headers, json=body)
     return res.json()["choices"][0]["text"]
 
+def read_this(prompt):
+    client = boto3.client('polly')
+    response = client.synthesize_speech(
+        Engine = 'standard', 
+        LanguageCode = 'en-US', 
+        OutputFormat = 'mp3', 
+        Text = prompt, 
+        TextType = 'text', 
+        VoiceId = 'Joanna'
+    )
+
+    filename = "/tmp/polly.mp3"
+    with open(filename, "wb") as f:
+        f.write(response["AudioStream"].read())
+
+    res = upload_to_cloudinary(filename, resource_type='raw')
+    return res['url']
+
 def lambda_handler(event, context):
     body = event["body"]
     if event["isBase64Encoded"]:

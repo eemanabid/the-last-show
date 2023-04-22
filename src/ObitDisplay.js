@@ -43,6 +43,11 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
+  const handlePlay = (speechUrl) => {
+    const audio = new Audio(speechUrl);
+    audio.play();
+  };
+
   return (
     <div id="container">
       <header>
@@ -75,6 +80,11 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                     )} - ${formatDate(obituary.diedDate)}`}</p>
                   </p>
                   <p id="obit-description">{obituary.obituary}</p>
+                  {/*
+                  <div>
+                    <button onClick={() => handlePlay(obituary.speech_url)}>Play Speech</button>
+                  </div>
+                    */}
                 </div>
               </div>
             ))}
