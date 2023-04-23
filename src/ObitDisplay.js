@@ -87,12 +87,12 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                   className="obituary-image"
                 />
                 <div>
-                  <p id="obit-title">
+                  <div id="obit-title">
                     {obituary.name}
                     <p id="obit-date">{`${formatDate(
                       obituary.bornDate
                     )} - ${formatDate(obituary.diedDate)}`}</p>
-                  </p>
+                  </div>
                   {showDropdown && (
                     <div className="dropdown">
                       <p id="obit-description">{obituary.obituary}</p>
