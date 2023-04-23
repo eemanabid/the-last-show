@@ -54,6 +54,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
       audio.pause();
       setAudioPlaying(false);
     }
+    event.stopPropagation();
   };
 
   const handleDropdownToggle = () => {
