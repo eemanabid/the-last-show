@@ -6,11 +6,11 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
   const [bornDate, setBornDate] = useState("");
   const [diedDate, setDiedDate] = useState("");
   const [savingObituary, setSavingObituary] = useState(false);
+  const [uuid, setUuid] = useState("");
  
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     setSelectedImage(e.target.files[0]);
-    console.log(file);
   };
 
   const handleXButtonClick = () => {
@@ -46,11 +46,13 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
         bornDate,
         diedDate,
       };
+      const newid = localStorage.getItem("uuid");
       const data = new FormData();
       data.append("image", selectedImage);
       data.append("name", name);
       data.append("bornDate", bornDate);
       data.append("diedDate", diedDate);
+      data.append("uuid", newid);
       const response = await fetch(
         "https://z7hbbsaieiinsdewucy3j3wq7u0vlksu.lambda-url.ca-central-1.on.aws/",
         {

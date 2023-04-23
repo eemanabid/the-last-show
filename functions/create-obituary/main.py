@@ -112,6 +112,8 @@ def lambda_handler(event, context):
     name = binary_data[1].decode()
     bornDate = binary_data[2].decode()
     diedDate = binary_data[3].decode()
+    uuid = binary_data[4].decode()
+
 
     key = "obituary.png"
     file_name = os.path.join("/tmp", key)
@@ -131,7 +133,8 @@ def lambda_handler(event, context):
         'cloudinary_url': cloudinary_url,
         'obituary': gpt_description,
         'creation': int(time.time()),
-        "polly_url": mp3["secure_url"]
+        "polly_url": mp3["secure_url"],
+        "uuid": uuid
     }
 
     try:
