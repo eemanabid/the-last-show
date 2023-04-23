@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 
 function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
-  const [audioPlaying, setAudioPlaying] = useState(false);
   const [showDropdown, setShowDropdown] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState(null);
 
   useEffect(() => {
-    /*const savedObituaries =
-      JSON.parse(localStorage.getItem("obituaries")) || [];
-    setObituaries(savedObituaries);*/
+    if (obituaries.length > 0) {
+      const newestObit = obituaries[obituaries.length - 1];
+      setShowDropdown((prevState) => ({
+        ...prevState,
+        [newestObit.cloudinary_url]: true,
+      }));
+    }
+  }, [obituaries]);
+
+  useEffect(() => {
     async function get_obituaries() {
       const res = await fetch(
         "https://p2fzxu4vzdmyvuykry3yh2kwnq0heoqz.lambda-url.ca-central-1.on.aws/",
@@ -33,17 +39,10 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
       }
     }
     get_obituaries();
-  }, []);
-
+  }, []); 
+  
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
-    {
-      /* 
-    Just to clear all obitueries from local storage -
-    localStorage.clear();
-    console.log("Local storage cleared.");   
-    */
-    }
   };
 
   const formatDate = (date) => {

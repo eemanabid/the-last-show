@@ -25,13 +25,14 @@ def get_keys(key_path):
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("the-last-show-30142625")
     
-def upload_to_cloudinary(filename, resource_type = "image", extra_fields=()):
+def upload_to_cloudinary(filename, resource_type = "", extra_fields=()):
     api_key = get_keys("/the-last-show/cloudinary-key")
     cloud_name = "xmanox"
     api_secret = get_keys("/the-last-show/cloudinary-secret-key")
 
     body = {
-        "api_key": api_key
+        "api_key": api_key,
+        #"eager": extra_fields.get("eager", "")
     }
 
     files = {
@@ -117,8 +118,8 @@ def lambda_handler(event, context):
     with open(file_name, "wb") as f:
         f.write(binary_data[0])
 
-    res = upload_to_cloudinary(file_name)
-    cloudinary_url = res['url']
+    res = upload_to_cloudinary(file_name, resource_type="image", extra_fields={"eager": "e_art:zorro"})
+    cloudinary_url = res["eager"][0]["url"]
     gpt_description = ask_gpt(name, bornDate, diedDate)
     voice = read_this(gpt_description)
     mp3 = upload_to_cloudinary(voice, resource_type="raw")

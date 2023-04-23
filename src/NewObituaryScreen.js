@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import ObitDisplay from "./ObitDisplay";
-import { v4 as uuidv4 } from "uuid";
 
 function NewObituaryScreen({ setShowNewObituaryScreen }) {
   const [selectedImage, setSelectedImage] = useState(null);
