@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import ObitDisplay from "./ObitDisplay";
 import { v4 as uuidv4 } from "uuid";
 
-function NewObituaryScreen( {setShowNewObituaryScreen} ) {
+function NewObituaryScreen({ setShowNewObituaryScreen }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState("");
   const [bornDate, setBornDate] = useState("");
   const [diedDate, setDiedDate] = useState("");
-  
+  const [savingObituary, setSavingObituary] = useState(false);
+
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     setSelectedImage(e.target.files[0]);
-    console.log(file)
+    console.log(file);
   };
 
   const handleXButtonClick = () => {
@@ -20,9 +21,24 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
 
   const handleSaveObituary = async () => {
     if (name.trim() === "") {
-      alert("Please fill out this field.");
+      alert("Please write a name for the deceased.");
+      setSavingObituary(false);
       return;
-      }
+    }
+
+    if (!selectedImage) {
+      alert("Please select an image for the deceased.");
+      setSavingObituary(false);
+      return;
+    }
+  
+    if (!bornDate || !diedDate) {
+      alert("Please select both a born and a died date.");
+      setSavingObituary(false);
+      return;
+    }
+
+    setSavingObituary(true);
     const reader = new FileReader();
     reader.readAsDataURL(selectedImage);
     reader.onload = async () => {
@@ -37,10 +53,13 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
       data.append("name", name);
       data.append("bornDate", bornDate);
       data.append("diedDate", diedDate);
-      const response = await fetch ("https://z7hbbsaieiinsdewucy3j3wq7u0vlksu.lambda-url.ca-central-1.on.aws/", {
-        method: "POST",
-        body: data,
-      })
+      const response = await fetch(
+        "https://z7hbbsaieiinsdewucy3j3wq7u0vlksu.lambda-url.ca-central-1.on.aws/",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
       /*
       const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
       savedObituaries.push(obituary);
@@ -51,14 +70,15 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
       console.log(result);
     };
   };
-  
 
   return (
     <div id="container">
       <header>
         <div id="app-header">
           <div>
-          <button className="obit-log" onClick={handleXButtonClick}>X</button>
+            <button className="obit-log" onClick={handleXButtonClick}>
+              X
+            </button>
           </div>
         </div>
       </header>
@@ -66,7 +86,11 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
         <div id="obit-holder-new">
           <div id="obit-maker">
             <h3>Create a New Obituary</h3>
-            <img src="./obituary.png" alt="obituary-logo" className="obituary-logo"/>
+            <img
+              src="./obituary.png"
+              alt="obituary-logo"
+              className="obituary-logo"
+            />
             <br />
             <br />
             <div id="image-input">
@@ -91,7 +115,11 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Name of the deceased"
-                style={{ border: "1px solid black", padding: "17px", width: "500px" }}
+                style={{
+                  border: "1px solid black",
+                  padding: "17px",
+                  width: "500px",
+                }}
               />
             </div>
             <br />
@@ -112,7 +140,13 @@ function NewObituaryScreen( {setShowNewObituaryScreen} ) {
               />
             </div>
             <br />
-            <button id="write-obit" onClick={handleSaveObituary}>Write Obituary</button>
+            <button
+              id="write-obit"
+              onClick={handleSaveObituary}
+              className={savingObituary ? "saving-obit" : ""}
+            >
+              {savingObituary ? "Saving obituary, please wait a moment.." : "Write Obituary"}
+            </button>
           </div>
         </div>
       </div>

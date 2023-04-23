@@ -267,3 +267,9 @@ button:hover,
   white-space: nowrap;
   border: 0;
 }
+
+#write-obit.saving-obit {
+  background-color: lightgrey;
+  cursor: not-allowed;
+}
+
