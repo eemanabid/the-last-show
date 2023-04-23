@@ -21,7 +21,11 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
       console.log(jsonRes);
 
       if (jsonRes && jsonRes.length != null) {
-        setObituaries(jsonRes);
+        const mappedObituaries = jsonRes.map((obituary) => ({
+          ...obituary,
+          audioPlaying: false,
+        }));
+        setObituaries(mappedObituaries);
       } else {
         setObituaries([]); // set notes to empty array
       }
@@ -45,32 +49,28 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
-  const handleAudioToggle = (event) => {
+  const handleAudioToggle = (event, obituary) => {
     const audio = event.target.nextSibling;
+    const newObituaries = obituaries.map((o) =>
+      o.cloudinary_url === obituary.cloudinary_url
+        ? { ...o, audioPlaying: !o.audioPlaying }
+        : o
+    );
+    setObituaries(newObituaries);
     if (audio.paused) {
       audio.play();
-      setAudioPlaying(true);
     } else {
       audio.pause();
-      setAudioPlaying(false);
     }
     event.stopPropagation();
   };
+  
 
   const handleDropdownToggle = (obituaryId) => {
     setShowDropdown((prevState) => ({
       ...prevState,
       [obituaryId]: !prevState[obituaryId],
     }));
-  
-    Object.keys(showDropdown).forEach((key) => {
-      if (key !== obituaryId) {
-        setShowDropdown((prevState) => ({
-          ...prevState,
-          [key]: false,
-        }));
-      }
-    });
   };
 
   return (
@@ -111,12 +111,12 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                       <div className="audio-container">
                         <button
                           className={`play-pause ${
-                            audioPlaying ? "pause" : "play"
+                            obituary.audioPlaying ? "pause" : "play"
                           }`}
-                          onClick={handleAudioToggle}
+                          onClick={(event) => handleAudioToggle(event, obituary)}
                         >
                           <span className="sr-only">
-                            {audioPlaying ? "Pause" : "Play"}
+                            {obituary.audioPlaying ? "Pause" : "Play"}
                           </span>
                         </button>
                         <audio src={obituary.polly_url} />

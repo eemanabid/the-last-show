@@ -120,6 +120,7 @@ def lambda_handler(event, context):
     res = upload_to_cloudinary(file_name)
     cloudinary_url = res['url']
     gpt_description = ask_gpt(name, bornDate, diedDate)
+    voice = read_this(gpt_description)
 
     item = {
         'name': name,
