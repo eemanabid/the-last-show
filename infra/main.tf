@@ -59,6 +59,7 @@ resource "aws_lambda_function" "lambda" {
   handler          = "main.lambda_handler"
   filename         = "create-obituary.zip"
   source_code_hash = data.archive_file.create-obituary-archive.output_base64sha256
+  timeout = 20
 
   # see all available runtimes here: https://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-Runtime
   runtime = "python3.9"
@@ -241,6 +242,7 @@ resource "aws_lambda_function" "lambda_get_obituaries" {
   handler          = "main.lambda_handler"
   filename         = "get-obituaries.zip"
   source_code_hash = data.archive_file.get-obituaries-30141172-archive.output_base64sha256
+  timeout = 20
   runtime          = "python3.9"
 }
 
