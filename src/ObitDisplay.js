@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
   const [audioPlaying, setAudioPlaying] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     /*const savedObituaries =
@@ -55,17 +56,21 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     }
   };
 
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
     <div id="container">
       <header>
         <div id="app-header">
           <h1>The Last Show</h1>
-
           <div onClick={handleNewObituaryClick}>
             <button className="log">+ New Obituary</button>
           </div>
         </div>
       </header>
+
       <div id="main-container">
         {obituaries.length > 0 ? (
           <div id="obit-holder">
@@ -73,6 +78,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
               <div
                 key={`${obituary.bornDate}-${obituary.diedDate}`}
                 id="obit-preview"
+                onClick={handleDropdownToggle}
               >
                 <img
                   src={obituary.cloudinary_url}
@@ -86,20 +92,24 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                       obituary.bornDate
                     )} - ${formatDate(obituary.diedDate)}`}</p>
                   </p>
-                  <p id="obit-description">{obituary.obituary}</p>
-                  <div className="audio-container">
-                    <button
-                      className={`play-pause ${
-                        audioPlaying ? "pause" : "play"
-                      }`}
-                      onClick={handleAudioToggle}
-                    >
-                      <span className="sr-only">
-                        {audioPlaying ? "Pause" : "Play"}
-                      </span>
-                    </button>
-                    <audio src={obituary.polly_url} />
-                  </div>
+                  {showDropdown && (
+                    <div className="dropdown">
+                      <p id="obit-description">{obituary.obituary}</p>
+                      <div className="audio-container">
+                        <button
+                          className={`play-pause ${
+                            audioPlaying ? "pause" : "play"
+                          }`}
+                          onClick={handleAudioToggle}
+                        >
+                          <span className="sr-only">
+                            {audioPlaying ? "Pause" : "Play"}
+                          </span>
+                        </button>
+                        <audio src={obituary.polly_url} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

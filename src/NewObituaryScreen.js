@@ -8,7 +8,7 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
   const [bornDate, setBornDate] = useState("");
   const [diedDate, setDiedDate] = useState("");
   const [savingObituary, setSavingObituary] = useState(false);
-
+ 
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     setSelectedImage(e.target.files[0]);
