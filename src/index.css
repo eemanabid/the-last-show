@@ -203,5 +203,67 @@ button:hover,
 #obit-description {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: medium;
-  padding: 10px 25px 25px 25px;
+  padding: 10px 25px 10px 25px;
+}
+
+.audio-container{
+  height: 60px;
+  justify-items: center;
+  align-items: center;
+  flex: 1;
+  display: grid;
+  padding-bottom: 10px;
+}
+
+.play-pause {
+  border-radius: 50%;
+  background-color: darkslategray;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.play-pause.play::before {
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent white;
+}
+
+.play-pause.pause::before {
+  content: '';
+  width: 2px;
+  height: 15px;
+  margin-left: 3px;
+  border-style: solid;
+  border-width: 0 0 0 4px;
+  border-color: transparent transparent transparent white;
+}
+
+.play-pause.pause::after {
+  content: '';
+  width: 2px;
+  height: 15px;
+  margin-left: 3px;
+  border-style: solid;
+  border-width: 0 0 0 4px;
+  border-color: transparent transparent transparent white;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }

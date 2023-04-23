@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
+  const [audioPlaying, setAudioPlaying] = useState(false);
 
   useEffect(() => {
     /*const savedObituaries =
@@ -43,9 +44,15 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
-  const handlePlay = (speechUrl) => {
-    const audio = new Audio(speechUrl);
-    audio.play();
+  const handleAudioToggle = (event) => {
+    const audio = event.target.nextSibling;
+    if (audio.paused) {
+      audio.play();
+      setAudioPlaying(true);
+    } else {
+      audio.pause();
+      setAudioPlaying(false);
+    }
   };
 
   return (
@@ -80,11 +87,19 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                     )} - ${formatDate(obituary.diedDate)}`}</p>
                   </p>
                   <p id="obit-description">{obituary.obituary}</p>
-                  {/*
-                  <div>
-                    <button onClick={() => handlePlay(obituary.speech_url)}>Play Speech</button>
+                  <div className="audio-container">
+                    <button
+                      className={`play-pause ${
+                        audioPlaying ? "pause" : "play"
+                      }`}
+                      onClick={handleAudioToggle}
+                    >
+                      <span className="sr-only">
+                        {audioPlaying ? "Pause" : "Play"}
+                      </span>
+                    </button>
+                    <audio src={obituary.polly_url} />
                   </div>
-                    */}
                 </div>
               </div>
             ))}

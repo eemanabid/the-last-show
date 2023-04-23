@@ -98,8 +98,7 @@ def read_this(prompt):
     with open(filename, "wb") as f:
         f.write(response["AudioStream"].read())
 
-    res = upload_to_cloudinary(filename, resource_type='raw')
-    return res['url']
+    return filename
 
 def lambda_handler(event, context):
     body = event["body"]
