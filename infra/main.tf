@@ -114,6 +114,33 @@ resource "aws_iam_policy" "ssm" {
 EOF
 }
 
+resource "aws_iam_policy" "polly" {
+  name        = "lambda-polly-create-obituary-30141172"
+  description = "IAM policy for polly"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "polly:DescribeVoices",
+                "polly:GetLexicon",
+                "polly:GetSpeechSynthesisTask",
+                "polly:ListLexicons",
+                "polly:ListSpeechSynthesisTasks",
+                "polly:SynthesizeSpeech"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+EOF
+}
+
 # attach the above policy to the function role
 # see the docs: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
@@ -126,6 +153,13 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 resource "aws_iam_role_policy_attachment" "lambda_ssm" {
   role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.ssm.arn
+}
+
+# attach the above policy to the function role
+# see the docs: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+resource "aws_iam_role_policy_attachment" "lambda_polly" {
+  role       = aws_iam_role.lambda.name
+  policy_arn = aws_iam_policy.polly.arn
 }
 
 # create a Function URL for Lambda 

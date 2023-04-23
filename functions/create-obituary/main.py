@@ -121,6 +121,7 @@ def lambda_handler(event, context):
     cloudinary_url = res['url']
     gpt_description = ask_gpt(name, bornDate, diedDate)
     voice = read_this(gpt_description)
+    mp3 = upload_to_cloudinary(voice, resource_type="raw")
 
     item = {
         'name': name,
@@ -128,7 +129,8 @@ def lambda_handler(event, context):
         'diedDate': diedDate,
         'cloudinary_url': cloudinary_url,
         'obituary': gpt_description,
-        'creation': int(time.time())
+        'creation': int(time.time()),
+        "polly_url": mp3["secure_url"]
     }
 
     try:

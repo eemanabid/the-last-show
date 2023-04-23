@@ -4,6 +4,8 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showDropdown, setShowDropdown] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audioElement, setAudioElement] = useState(null);
 
   useEffect(() => {
     /*const savedObituaries =
@@ -49,22 +51,47 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
-  const handleAudioToggle = (event, obituary) => {
-    const audio = event.target.nextSibling;
+  const createAudioElement = (polly, obituary) => {
+    const audio = new Audio(polly);
+    audio.onended = () => {
+      setIsPlaying(false);
+      const newObituaries = obituaries.map((o) =>
+        o.cloudinary_url === obituary.cloudinary_url
+          ? { ...o, audioPlaying: false }
+          : o
+      );
+      setObituaries(newObituaries);
+      setAudioElement(null);
+    };
+    setAudioElement(audio);
+    return audio;
+  };
+  
+
+  const handleAudioToggle = (event, obituary, polly) => {
+    event.stopPropagation();
     const newObituaries = obituaries.map((o) =>
       o.cloudinary_url === obituary.cloudinary_url
         ? { ...o, audioPlaying: !o.audioPlaying }
-        : o
+        : { ...o, audioPlaying: false }
     );
     setObituaries(newObituaries);
-    if (audio.paused) {
+    if (!audioElement || audioElement.src !== polly) {
+      if (audioElement) {
+        audioElement.pause();
+        setAudioElement(null);
+      }
+      const audio = createAudioElement(polly, obituary);
       audio.play();
+      setIsPlaying(true);
+    } else if (isPlaying) {
+      audioElement.pause();
+      setIsPlaying(false);
     } else {
-      audio.pause();
+      audioElement.play();
+      setIsPlaying(true);
     }
-    event.stopPropagation();
   };
-  
 
   const handleDropdownToggle = (obituaryId) => {
     setShowDropdown((prevState) => ({
@@ -113,7 +140,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                           className={`play-pause ${
                             obituary.audioPlaying ? "pause" : "play"
                           }`}
-                          onClick={(event) => handleAudioToggle(event, obituary)}
+                          onClick={(event) => handleAudioToggle(event, obituary, obituary.polly_url)}
                         >
                           <span className="sr-only">
                             {obituary.audioPlaying ? "Pause" : "Play"}
