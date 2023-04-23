@@ -77,7 +77,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
           <div id="obit-holder">
             {obituaries.map((obituary) => (
               <div
-                key={`${obituary.bornDate}-${obituary.diedDate}`}
+                key={obituary.name}
                 id="obit-preview"
                 onClick={handleDropdownToggle}
               >
