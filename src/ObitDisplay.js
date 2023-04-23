@@ -62,15 +62,6 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
       ...prevState,
       [obituaryId]: !prevState[obituaryId],
     }));
-  
-    Object.keys(showDropdown).forEach((key) => {
-      if (key !== obituaryId) {
-        setShowDropdown((prevState) => ({
-          ...prevState,
-          [key]: false,
-        }));
-      }
-    });
   };
 
   return (
