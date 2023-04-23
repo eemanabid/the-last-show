@@ -91,7 +91,7 @@ def read_this(prompt):
         OutputFormat = 'mp3', 
         Text = prompt, 
         TextType = 'text', 
-        VoiceId = 'Joanna'
+        VoiceId = 'Salli'
     )
 
     filename = "/tmp/polly.mp3"

@@ -60,11 +60,6 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
           body: data,
         }
       );
-      /*
-      const savedObituaries = JSON.parse(localStorage.getItem("obituaries")) || [];
-      savedObituaries.push(obituary);
-      localStorage.setItem("obituaries", JSON.stringify(savedObituaries));
-      console.log("Obituary saved to local storage:", obituary);*/
       setShowNewObituaryScreen(false);
       const result = await response.text();
       console.log(result);
@@ -145,7 +140,7 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
               onClick={handleSaveObituary}
               className={savingObituary ? "saving-obit" : ""}
             >
-              {savingObituary ? "Saving obituary, please wait a moment.." : "Write Obituary"}
+              {savingObituary ? "Saving obituary. Please wait a moment..." : "Write Obituary"}
             </button>
           </div>
         </div>
