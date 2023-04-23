@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 function ObitDisplay({ setShowNewObituaryScreen }) {
   const [obituaries, setObituaries] = useState([]);
   const [audioPlaying, setAudioPlaying] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState({});
 
   useEffect(() => {
     /*const savedObituaries =
@@ -57,8 +57,20 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
     event.stopPropagation();
   };
 
-  const handleDropdownToggle = () => {
-    setShowDropdown(!showDropdown);
+  const handleDropdownToggle = (obituaryId) => {
+    setShowDropdown((prevState) => ({
+      ...prevState,
+      [obituaryId]: !prevState[obituaryId],
+    }));
+  
+    Object.keys(showDropdown).forEach((key) => {
+      if (key !== obituaryId) {
+        setShowDropdown((prevState) => ({
+          ...prevState,
+          [key]: false,
+        }));
+      }
+    });
   };
 
   return (
@@ -77,9 +89,9 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
           <div id="obit-holder">
             {obituaries.map((obituary) => (
               <div
-                key={obituary.name}
+                key={obituary.cloudinary_url}
                 id="obit-preview"
-                onClick={handleDropdownToggle}
+                onClick={() => handleDropdownToggle(obituary.cloudinary_url)}
               >
                 <img
                   src={obituary.cloudinary_url}
@@ -93,7 +105,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
                       obituary.bornDate
                     )} - ${formatDate(obituary.diedDate)}`}</p>
                   </div>
-                  {showDropdown && (
+                  {showDropdown[obituary.cloudinary_url] && (
                     <div className="dropdown">
                       <p id="obit-description">{obituary.obituary}</p>
                       <div className="audio-container">
