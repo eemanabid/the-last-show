@@ -8,6 +8,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState(null);
   const [uuid, setUuid] = useState("");
+  console.log(window.innerWidth);
 
   useEffect(() => {
     const uuid = localStorage.getItem("uuid");

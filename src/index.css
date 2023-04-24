@@ -98,20 +98,30 @@ button:hover,
   color: gray;
 }
 #obit-holder {
-  display: flex;
+  display: grid;
   flex: 1;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: auto;
   gap: 50px;
   justify-items: center;
   align-items: start;
-  padding: 20px;
+  padding: 5% 5% 5% 5%;
   height: 100%;
   flex-wrap: wrap;
 }
 #obit-holder-new {
   display: flex;
   flex: 1;
+}
+@media screen and (max-width: 1300px) {
+  #obit-holder {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #obit-holder {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 #obit-maker{
   display: flex;
