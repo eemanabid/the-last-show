@@ -68,6 +68,7 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
 
   return (
     <div id="container">
+      <div id="alert-message"></div>
       <header>
         <div id="app-header">
           <div>
@@ -139,6 +140,7 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
               id="write-obit"
               onClick={handleSaveObituary}
               className={savingObituary ? "saving-obit" : ""}
+              disabled={savingObituary}
             >
               {savingObituary ? "Saving obituary. Please wait a moment..." : "Write Obituary"}
             </button>

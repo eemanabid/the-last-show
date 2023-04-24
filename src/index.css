@@ -281,7 +281,7 @@ button:hover,
 }
 
 #write-obit.saving-obit {
-  background-color: lightgrey;
+  background-color: darkblue;
+  color: white;
   cursor: not-allowed;
 }
-
