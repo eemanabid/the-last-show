@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
-function NewObituaryScreen({ setShowNewObituaryScreen }) {
+function NewObituaryScreen({ setShowNewObituaryScreen, setObituaries }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState("");
   const [bornDate, setBornDate] = useState("");
   const [diedDate, setDiedDate] = useState("");
   const [savingObituary, setSavingObituary] = useState(false);
-  const [uuid, setUuid] = useState("");
  
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
@@ -40,12 +39,6 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
     const reader = new FileReader();
     reader.readAsDataURL(selectedImage);
     reader.onload = async () => {
-      const obituary = {
-        selectedImage: reader.result,
-        name,
-        bornDate,
-        diedDate,
-      };
       const newid = localStorage.getItem("uuid");
       const data = new FormData();
       data.append("image", selectedImage);
@@ -63,6 +56,7 @@ function NewObituaryScreen({ setShowNewObituaryScreen }) {
       setShowNewObituaryScreen(false);
       const result = await response.text();
       console.log(result);
+      setObituaries((prevState) => [...prevState, result]);
     };
   };
 

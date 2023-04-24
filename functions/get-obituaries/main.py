@@ -6,16 +6,13 @@ dynamodb_resource = boto3.resource('dynamodb')
 table = dynamodb_resource.Table('the-last-show-30142625')
 
 def lambda_handler(event, context):
-    uuid = event["headers"]["uuid"]
     try:
-        response = table.query(
-            KeyConditionExpression=Key("uuid").eq(uuid),
-        )
+        response = table.scan()
         items = response['Items']
         
         if (len(items) != 0):
-                sorted_items = sorted(items, key=lambda x: x["creation"])
-                return sorted_items
+            sorted_items = sorted(items, key=lambda x: x["creation"])
+            return sorted_items
         else:
             return []
     except Exception as exp:

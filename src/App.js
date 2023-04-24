@@ -5,13 +5,19 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [showNewObituaryScreen, setShowNewObituaryScreen] = useState(false);
+  const [obituaries, setObituaries] = useState([]);
 
   return (
     <div id="container">
       {showNewObituaryScreen ? (
-        <NewObituaryScreen setShowNewObituaryScreen={setShowNewObituaryScreen}/>
+        <NewObituaryScreen 
+        setObituaries={setObituaries}
+        setShowNewObituaryScreen={setShowNewObituaryScreen}/>
       ) : (
-        <ObitDisplay setShowNewObituaryScreen={setShowNewObituaryScreen} />
+        <ObitDisplay 
+        obituaries={obituaries}
+        setObituaries={setObituaries}
+        setShowNewObituaryScreen={setShowNewObituaryScreen} />
       )}
     </div>
   );

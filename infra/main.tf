@@ -198,15 +198,9 @@ resource "aws_dynamodb_table" "the-last-show-30142625" {
   # we only need a student id to find an item in the table; therefore, we 
   # don't need a sort key here
   
-  hash_key = "uuid" // CHANGE THESE
-  range_key = "name"
-  
+  hash_key = "name" // CHANGE THESE  
 
   # the hash_key data type is string
-  attribute {
-    name = "uuid"
-    type = "S"
-  }
 
   attribute {
     name = "name"
@@ -260,7 +254,7 @@ resource "aws_iam_policy" "dynamodb_get_obituaries_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "dynamodb:Query"
+        Action = "dynamodb:Scan"
         Effect = "Allow"
         Resource = aws_dynamodb_table.the-last-show-30142625.arn
       },

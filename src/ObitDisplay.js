@@ -2,26 +2,11 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 
-function ObitDisplay({ setShowNewObituaryScreen }) {
-  const [obituaries, setObituaries] = useState([]);
+function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
+  //const [obituaries, setObituaries] = useState([]);
   const [showDropdown, setShowDropdown] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState(null);
-  const [uuid, setUuid] = useState("");
-  console.log(window.innerWidth);
-
-  useEffect(() => {
-    const uuid = localStorage.getItem("uuid");
-    if (uuid) {
-      setUuid(uuid);
-      console.log("Existing uuid found: ", uuid);
-    } else {
-      const newUuid = uuidv4();
-      localStorage.setItem("uuid", newUuid);
-      setUuid(newUuid);
-      console.log("New uuid created: ", newUuid);
-    }
-  }, []);
 
   useEffect(() => {
     if (obituaries.length > 0) {
@@ -31,18 +16,21 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
         [newestObit.cloudinary_url]: true,
       }));
     }
+    if (obituaries.length > 1) {
+      const prevNewestObit = obituaries[obituaries.length - 2];
+      setShowDropdown((prevState) => ({
+        ...prevState,
+        [prevNewestObit.cloudinary_url]: false,
+      }));
+    }
   }, [obituaries]);
 
   useEffect(() => {
-    if(!uuid) return;
     async function get_obituaries() {
       const res = await fetch(
         "https://p2fzxu4vzdmyvuykry3yh2kwnq0heoqz.lambda-url.ca-central-1.on.aws/",
         {
-          method: "GET",
-          headers: {
-            'uuid': uuid
-          }
+          method: "GET"
         }
       );
 
@@ -60,7 +48,7 @@ function ObitDisplay({ setShowNewObituaryScreen }) {
       }
     }
     get_obituaries();
-  }, [uuid]); 
+  }, []); 
   
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
