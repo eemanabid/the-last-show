@@ -25,6 +25,13 @@ function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
           audioPlaying: false,
         }));
         setObituaries(mappedObituaries);
+        if (jsonRes.length > 0) {
+          const newestObit = mappedObituaries[jsonRes.length - 1];
+          setShowDropdown((prevState) => ({
+            ...prevState,
+            [newestObit.cloudinary_url]: true,
+          }));
+        }
         if (jsonRes.length > 1) {
           const secondNewestObit = mappedObituaries[jsonRes.length - 2];
           setShowDropdown((prevState) => ({
@@ -38,16 +45,6 @@ function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
     }
     get_obituaries();
   }, []); 
-
-  useEffect(() => {
-    if (obituaries.length > 0) {
-      const newestObit = obituaries[obituaries.length - 1];
-      setShowDropdown((prevState) => ({
-        ...prevState,
-        [newestObit.cloudinary_url]: true,
-      }));
-    }
-  }, [obituaries]);
   
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
