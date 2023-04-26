@@ -110,7 +110,7 @@ button:hover,
   display: flex;
   flex: 1;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   #obit-holder {
     grid-template-columns: repeat(2, 1fr);
   }

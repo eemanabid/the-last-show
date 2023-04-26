@@ -3,27 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
-  //const [obituaries, setObituaries] = useState([]);
   const [showDropdown, setShowDropdown] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState(null);
-
-  useEffect(() => {
-    if (obituaries.length > 0) {
-      const newestObit = obituaries[obituaries.length - 1];
-      setShowDropdown((prevState) => ({
-        ...prevState,
-        [newestObit.cloudinary_url]: true,
-      }));
-    }
-    if (obituaries.length > 1) {
-      const prevNewestObit = obituaries[obituaries.length - 2];
-      setShowDropdown((prevState) => ({
-        ...prevState,
-        [prevNewestObit.cloudinary_url]: false,
-      }));
-    }
-  }, [obituaries]);
 
   useEffect(() => {
     async function get_obituaries() {
@@ -43,12 +25,29 @@ function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
           audioPlaying: false,
         }));
         setObituaries(mappedObituaries);
+        if (jsonRes.length > 1) {
+          const secondNewestObit = mappedObituaries[jsonRes.length - 2];
+          setShowDropdown((prevState) => ({
+            ...prevState,
+            [secondNewestObit.cloudinary_url]: false,
+          }));
+        }
       } else {
         setObituaries([]); // set notes to empty array
       }
     }
     get_obituaries();
   }, []); 
+
+  useEffect(() => {
+    if (obituaries.length > 0) {
+      const newestObit = obituaries[obituaries.length - 1];
+      setShowDropdown((prevState) => ({
+        ...prevState,
+        [newestObit.cloudinary_url]: true,
+      }));
+    }
+  }, [obituaries]);
   
   const handleNewObituaryClick = () => {
     setShowNewObituaryScreen(true);
@@ -74,7 +73,6 @@ function ObitDisplay({ setShowNewObituaryScreen, obituaries, setObituaries }) {
     setAudioElement(audio);
     return audio;
   };
-  
 
   const handleAudioToggle = (event, obituary, polly) => {
     event.stopPropagation();

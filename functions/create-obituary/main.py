@@ -31,8 +31,7 @@ def upload_to_cloudinary(filename, resource_type = "", extra_fields=()):
     api_secret = get_keys("/the-last-show/cloudinary-secret-key")
 
     body = {
-        "api_key": api_key,
-        #"eager": extra_fields.get("eager", "")
+        "api_key": api_key
     }
 
     files = {
